@@ -173,8 +173,9 @@ namespace העתק_את_כל_הקבצים
                     {
                         // Debug.WriteLine(f);
                         string fileName = Path.GetFileName(f);
+                        string fileName1 = Guid.NewGuid().ToString() + "." + (fileName.Split('.').Length > 1 ? fileName.Split('.')[1] : "");
                         NameFile = f;
-                        File.Copy(f, System.IO.Path.Combine(ToNewDirectori, fileName));
+                        File.Copy(f, System.IO.Path.Combine(ToNewDirectori, fileName1));
                         NumProgres++;
                     }
                     DirSearch(d);
