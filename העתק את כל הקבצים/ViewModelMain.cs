@@ -134,7 +134,7 @@ namespace העתק_את_כל_הקבצים
             NumProgres = 0;
             threadDirSearch = new Thread(DirSearch);
             threadDirSearch.Start(SourceDirectori);
-         
+
             //DirSearch(SourceDirectori, ToNewDirectori);
             //MessageBox.Show("סיימתי :)");
         }
@@ -173,7 +173,8 @@ namespace העתק_את_כל_הקבצים
                     {
                         // Debug.WriteLine(f);
                         string fileName = Path.GetFileName(f);
-                        string fileName1 = Guid.NewGuid().ToString() + "." + (fileName.Split('.').Length > 1 ? fileName.Split('.')[1] : "");
+                        //(fileName.Split('.').Length > 1 ? fileName.Split('.')[1] : "null")
+                        string fileName1 = Guid.NewGuid().ToString() + "." + fileName.Split('.')[fileName.Split(".").Length - 1];
                         NameFile = f;
                         File.Copy(f, System.IO.Path.Combine(ToNewDirectori, fileName1));
                         NumProgres++;
