@@ -4,36 +4,111 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:העתק_את_כל_הקבצים"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+         xmlns:gif="https://github.com/XamlAnimatedGif/XamlAnimatedGif"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow"   
+         AllowsTransparency="True" WindowStyle="None"
+       ResizeMode="CanResizeWithGrip"
+        Height="450" Width="800" Background="#E0F2F2F2">
+
+
     <Window.DataContext>
         <local:ViewModelMain/>
     </Window.DataContext>
+    <Window.Resources>
+        <local:ConvertIsVisibility x:Key="con"/>
+    </Window.Resources>
+    <!--<Window.Background>
+        <SolidColorBrush Opacity="0.5" Color="White"/>
+    </Window.Background>-->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="55" />
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
-        <StackPanel Margin="5">
-            <Button Command="{Binding SelectSourceDirectori}" Content="בחר תיקיית מקור" HorizontalAlignment="Center"/>
+
+        <StackPanel MouseDown="StackPanel_MouseDown" Grid.Column="0" Grid.ColumnSpan="2" Background="#B267B299" >
+            <Button Click="Button_Click"  Margin="0,10,20,0" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center" Background="#7FD61818">
+                <materialDesign:PackIcon 
+                            Kind="Close"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="30"
+                            Height="30"
+                            Foreground="Gray"   />
+            </Button>
+        </StackPanel>
+
+
+        <StackPanel Margin="5" Grid.Row="1">
+            <TextBlock Margin="0,0,0,10" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="בחר תיקיית מקור" FontWeight="Bold" FontSize="14"/>
+            <Button  Command="{Binding SelectSourceDirectori}" ToolTip="בחר תיקיית מקור"   HorizontalAlignment="Center" Background="#19DDDDDD">
+                <materialDesign:PackIcon 
+                            Kind="Folder"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="30"
+                            Height="30"
+                            Foreground="Gray"   />
+            </Button>
             <TextBlock Text="{Binding SourceDirectori}"  />
         </StackPanel>
-        <StackPanel Margin="5" Grid.Column="1">
-            <Button Command="{Binding SelectNewDirectori}" Content="בחר תיקיית יעד" HorizontalAlignment="Center"/>
+        <StackPanel Margin="5"  Grid.Row="1" Grid.Column="1">
+            <TextBlock Margin="0,0,0,10" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="בחר תיקיית יעד" FontWeight="Bold" FontSize="14"/>
+
+            <Button Command="{Binding SelectNewDirectori}" Background="#19DDDDDD" ToolTip="בחר תיקיית יעד"  HorizontalAlignment="Center">
+                <materialDesign:PackIcon 
+                            Kind="Folder"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="30"
+                            Height="30"
+                            Foreground="Gray"   />
+            </Button>
             <TextBlock Text="{Binding ToNewDirectori}"  />
         </StackPanel>
-        <Button Command="{Binding Tset}" Content="בדיקה" Margin="-10,-50,-10,10" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"  Grid.ColumnSpan="2"/>
-        <Button Command="{Binding Run}" Content="תתחיל לעבוד" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="1"  Grid.ColumnSpan="2"/>
-        <StackPanel Margin="5" Grid.Row="2"  Grid.ColumnSpan="2">
+        <Button Command="{Binding Tset}" ToolTip="בדיקה"   Margin="-10,-85,-10,10" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"  Grid.ColumnSpan="2" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="{Binding TsetAnimation}"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+            <materialDesign:PackIcon 
+                            Kind="TestTube"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="30"
+                            Height="30"
+                            Foreground="Gray"   />
+        </Button>
+        <Button Command="{Binding Run}" ToolTip="תתחיל לעבוד" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2"  Grid.ColumnSpan="2">
+            <Grid>
+                <Image Visibility="{Binding ManRun , Converter={StaticResource con}}" gif:AnimationBehavior.SourceUri="Images/4942ab41a3358d14cded6d951fad3ba6.gif"  Width="60" Height="50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                <materialDesign:PackIcon 
+                    Visibility="{Binding ManRun1 , Converter={StaticResource con}}"
+                            Kind="RunFast"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Width="30"
+                            Height="30"
+                            Foreground="Gray"   />
+            </Grid>
+        </Button>
+        <StackPanel Margin="5" Grid.Row="3"  Grid.ColumnSpan="2">
             <ProgressBar Height="50" Value="{Binding NumProgres}" Maximum="{Binding NumFiles}"/>
             <TextBlock Margin="10,-32,-10, 10" Text="{Binding NumProgres}"/>
             <TextBlock HorizontalAlignment="Right" Margin="10,-32, 50, 10" Text="{Binding NumFiles}"/>
-            <TextBlock Text="{Binding NameFile}"/>
+            <TextBlock Text="{Binding NameFile}" Background="#99F7F4F4"/>
         </StackPanel>
     </Grid>
 </Window>

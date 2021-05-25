@@ -8,7 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\4942ab41a3358d14cded6d951fad3ba6.gif" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\4942ab41a3358d14cded6d951fad3ba6.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignThemes" Version="4.0.0" />
     <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+    <PackageReference Include="XamlAnimatedGif" Version="1.2.3" />
   </ItemGroup>
 
 </Project>

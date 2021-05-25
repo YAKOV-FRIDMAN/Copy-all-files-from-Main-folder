@@ -60,6 +60,42 @@ namespace העתק_את_כל_הקבצים
                 NotifyPropertyChanged();
             }
         }
+        private int tsetAnimation;
+
+        public int TsetAnimation
+        {
+            get { return tsetAnimation; }
+            set
+            {
+                tsetAnimation = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        private bool manRun;
+
+        public bool ManRun
+        {
+            get { return manRun; }
+            set
+            {
+                manRun = value;
+                NotifyPropertyChanged();
+            }
+        }
+        private bool manRun1;
+
+        public bool ManRun1
+        {
+            get { return manRun1; }
+            set
+            {
+                manRun1 = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+
 
         private int numProgres;
 
@@ -89,6 +125,7 @@ namespace העתק_את_כל_הקבצים
 
         public ViewModelMain()
         {
+            ManRun1 = true;
             Run = new RelayCommandAsync(FuncRun);
             SelectSourceDirectori = new RelayCommandAsync(FuncSelectSourceDirectori);
             SelectNewDirectori = new RelayCommandAsync(FuncSelectNewDirectori);
@@ -101,8 +138,8 @@ namespace העתק_את_כל_הקבצים
         private async Task FuncTset()
         {
             NumFiles = 0;
-            threadTest = new Thread(TsetAlFile);
-
+            threadTest = new Thread(TsetAlFileFirst);
+            threadTest.IsBackground = true;
             threadTest.Start(SourceDirectori);
             // TsetAlFile(SourceDirectori);
 
@@ -133,11 +170,32 @@ namespace העתק_את_כל_הקבצים
         {
             NumProgres = 0;
             threadDirSearch = new Thread(DirSearch);
+            threadDirSearch.IsBackground = true;
             threadDirSearch.Start(SourceDirectori);
-
+            ManRun = true;
+            ManRun1 = false;
             //DirSearch(SourceDirectori, ToNewDirectori);
             //MessageBox.Show("סיימתי :)");
         }
+        void TsetAlFileFirst(object sDir)
+        {
+            System.Windows.Threading.DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += (o,e)=> {
+                if (TsetAnimation == 350)
+                    TsetAnimation = 0;
+                TsetAnimation++;
+            };
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 0 , 50);
+            dispatcherTimer.Start();
+
+
+            TsetAlFile(sDir);
+
+            dispatcherTimer.Stop();
+
+        }
+
+         
 
         void TsetAlFile(object sDir)
         {
@@ -147,12 +205,18 @@ namespace העתק_את_כל_הקבצים
                 {
                     foreach (string f in Directory.GetFiles(d))
                     {
+                        if (TsetAnimation == 350)
+                            TsetAnimation = 0;
+                        TsetAnimation++;
+
                         NumFiles++;
                         NameFile = f;
                     }
                     TsetAlFile(d);
                 }
-                Debug.WriteLine(NumFiles);
+
+                TsetAnimation = 0;
+                //Debug.WriteLine(NumFiles);
 
             }
             catch (System.Exception excpt)
@@ -171,6 +235,7 @@ namespace העתק_את_כל_הקבצים
                 {
                     foreach (string f in Directory.GetFiles(d))
                     {
+
                         // Debug.WriteLine(f);
                         string fileName = Path.GetFileName(f);
                         //(fileName.Split('.').Length > 1 ? fileName.Split('.')[1] : "null")
@@ -180,7 +245,11 @@ namespace העתק_את_כל_הקבצים
                         NumProgres++;
                     }
                     DirSearch(d);
+                    ManRun = true;
+                    ManRun1 = false;
                 }
+                ManRun = false;
+                ManRun1 = true;
             }
             catch (System.Exception excpt)
             {
